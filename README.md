@@ -20,17 +20,18 @@ computer's graphics card when the browser can use one, and on all of its process
 
 ## Tonight
 
-No training is set for tonight.
+**The brain, from stock, on the new moves (29 September)** - Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.
 
 ## The trainings on this build
 
 - **The brain, from stock** - Trains the AI brain, starting from the stock rules. Whole fights against the stock brain, a dice fighter and itself.
 - **The sensors alone, onto the game's brain** - Trains only the sensors, on top of the brain the game ships.
 - **A quick try (a few minutes)** - A few minutes, to see that this computer can train. Not a brain for the game.
+- **The brain, from stock, on the new moves (29 September)** (tonight) - Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.
 
 ## This build
 
-Built from the game at commit 51fbaf3 (2026-09-29). Every file the page gives carries that commit.
+Built from the game at commit 79acd3c (2026-09-29). Every file the page gives carries that commit.
 
 ## Third-party notice
 

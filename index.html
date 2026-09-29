@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit 51fbaf3. Opens by double-click. Do not edit by hand. -->
+<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit 79acd3c. Opens by double-click. Do not edit by hand. -->
 <!-- THIRD-PARTY NOTICE. The robot part shapes in this page are derived from the link meshes of unitree_ros
      (github.com/unitreerobotics/unitree_ros), used under the BSD 3-Clause licence below. This project is not affiliated with,
      nor endorsed by, Unitree Robotics.
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 <script id="runner-bundle">
-// ---- packed by runner/tools/pack.mjs from commit 51fbaf3; edit the modules, not this ----
+// ---- packed by runner/tools/pack.mjs from commit 79acd3c; edit the modules, not this ----
 // packed files: ["app/sim/arms.js","app/sim/brainfile.js","app/sim/damage.js","app/sim/decide-weights-universal.js","app/sim/policy.js","app/sim/brain.js","app/sim/referee.js","app/sim/weights.js","dev_log/4-game/feet58-moves.js","engine/boxparts.js","engine/motors.js","engine/packs.js","engine/parts.js","engine/studio_gl.js","engine/draw_gl.js","engine/gfx.js","engine/forge.js","engine/rigs.js","app/sim/body.js","app/sim/gait.js","app/sim/grapple.js","app/sim/getup.js","app/sim/mjcf.js","app/sim/ranges.js","app/sim/stander.js","app/sim/waist.js","app/sim/strikes.js","app/sim/decide.js","app/sim/steer.js","app/sim/walker.js","app/sim/steps.js","app/sim/world.js","app/sim/evolve.js","app/software.js","dev_log/4-game/feet58-limits.js","dev_log/4-game/feet58-meter.js","dev_log/4-game/feet58-steps.js","dev_log/4-game/feet58-views.js","gpu/card.js","gpu/cardkit.js","gpu/fights.js","gpu/rules.js","gpu/state.js","gpu/lib.js","gpu/cardengine.js","gpu/tasks.js","gpu/trainer.js","runner/page.js","runner/pool.js","gpu/engine.js","gpu/job.js","runner/worker-kit.js"]
 const __m_app_sim_arms = (() => {
 
@@ -10007,7 +10007,7 @@ return { framesFor, cardEngine };
 
 const __m_gpu_tasks = (() => {
 
-const TONIGHT = null;
+const TONIGHT = 'brain-sep-29';
 
 const TASKS = [
   { id: 'brain', name: 'The brain, from stock', added: '2026-09-26',
@@ -10019,6 +10019,9 @@ const TASKS = [
   { id: 'quick', name: 'A quick try (a few minutes)', added: '2026-09-28',
     what: 'A few minutes, to see that this computer can train. Not a brain for the game.',
     flags: '--universal 1 --shape steer --seconds 10 --held 2 --motors varied --pool 1 --lethality varied --rounds 1 --unfinished 1 --nooutput 3 --score dealt --near 1 --gens 5 --pop 8 --starts 2 --seed 5 --stop 30' },
+  { id: 'brain-sep-29', name: 'The brain, from stock, on the new moves (29 September)', added: '2026-09-29',
+    what: 'Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.',
+    flags: '--universal 1 --shape steer --seconds 60 --held 24 --motors varied --pool 1 --lethality varied --rounds 1 --unfinished 1 --nooutput 3 --score dealt --near 1 --gens 10 --pop 16 --starts 4 --seed 131 --stop 200' },
 ];
 
 return { TONIGHT, TASKS };
@@ -11075,7 +11078,7 @@ return { serve };
 </script>
 <script>
 const __RUNNER_MODULES = { "app/sim/decide-weights-universal.js": __m_app_sim_decide_weights_universal, "gpu/cardkit.js": __m_gpu_cardkit };
-const __RUNNER_BUILD = {"commit":"51fbaf3","date":"2026-09-29","built":"2026-09-29 20:06"};
+const __RUNNER_BUILD = {"commit":"79acd3c","date":"2026-09-29","built":"2026-09-29 21:26"};
 const __RUNNER_WORKER_URL = URL.createObjectURL(new Blob([document.getElementById('runner-bundle').textContent, "\nconst { fight, loadShipped } = __m_gpu_fights;\nconst { serve } = __m_runner_worker_kit;\n\nserve({\n  ready: async S => { if (S.pool) await loadShipped(); },\n  prepare: (S, shared) => shared.brains.map(w => Float64Array.from(w)),\n  run: (S, j, W) => fight(S, { kind: j.brain.kind, w: j.brain.w >= 0 ? W[j.brain.w] : null, fitted: j.brain.fitted }, j.seed, j.oi, j.self >= 0 ? W[j.self] : null),\n});\n"], { type: 'text/javascript' }));
 (async () => {
 
