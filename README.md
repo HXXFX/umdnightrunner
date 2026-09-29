@@ -5,12 +5,14 @@ The training page for UMD - Ultimate Machine Deathmatch. It trains the game's AI
 ## How to use it
 
 1. Open https://hxxfx.github.io/umdnightrunner/ in Chrome or Edge.
-2. Pick the training. Tonight's is marked TONIGHT and opens first.
-3. Click **Measure first**, then **Start training**, and leave the tab open. If it closes, open the page again and click **Carry on**.
-4. When it finishes, the files are in your Downloads folder.
+2. **Step 1**: tonight's training is already picked, marked **Tonight**.
+3. **Step 2**: wait for the checks to turn green, then click **Check speed**. It says how long the training will take.
+4. **Step 3**: click **Start training** and leave the tab open, in front. If it closes, open the page again and click **Carry on**.
+5. **Step 4**: each file is saved to your Downloads folder as soon as it is made. If Chrome asks to download multiple files, click
+   **Allow**.
 
 Nothing is sent anywhere: the page runs on the computer that opens it, and what it makes are downloads. It trains on the
-computer's processor for now; the fight is being moved onto the graphics card, and the page will use the card when it is.
+computer's graphics card when the browser can use one, and on all of its processor threads but one otherwise.
 
 ## Tonight
 
@@ -18,13 +20,13 @@ No training is set for tonight.
 
 ## The trainings on this build
 
-- **The brain, from stock** - The night of 26 September's brain training: the AI brain trained from the stock rules, on whole fights, both motor kinds, both lethalities, against the pool (the stock brain, the dice fighter and itself).
-- **The sensors alone, onto the game's brain** - The night of 26 September's second task: only the sensors' numbers move, on top of the brain the game ships.
-- **A quick try (a few minutes)** - Five generations of eight on 10-second fights: to see that this computer trains, not to train a brain for the game.
+- **The brain, from stock** - Trains the AI brain, starting from the stock rules. Whole fights against the stock brain, a dice fighter and itself.
+- **The sensors alone, onto the game's brain** - Trains only the sensors, on top of the brain the game ships.
+- **A quick try (a few minutes)** - A few minutes, to see that this computer can train. Not a brain for the game.
 
 ## This build
 
-Built from the game at commit 30b5e57 (2026-09-29). Every file the page gives carries that commit.
+Built from the game at commit 32d0a61 (2026-09-29). Every file the page gives carries that commit.
 
 ## Third-party notice
 
