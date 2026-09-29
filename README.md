@@ -26,7 +26,7 @@ No training is set for tonight.
 
 ## This build
 
-Built from the game at commit 32d0a61 (2026-09-29). Every file the page gives carries that commit.
+Built from the game at commit ac1ec1e (2026-09-29). Every file the page gives carries that commit.
 
 ## Third-party notice
 
