@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit ac1ec1e. Opens by double-click. Do not edit by hand. -->
+<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit 51fbaf3. Opens by double-click. Do not edit by hand. -->
 <!-- THIRD-PARTY NOTICE. The robot part shapes in this page are derived from the link meshes of unitree_ros
      (github.com/unitreerobotics/unitree_ros), used under the BSD 3-Clause licence below. This project is not affiliated with,
      nor endorsed by, Unitree Robotics.
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 <script id="runner-bundle">
-// ---- packed by runner/tools/pack.mjs from commit ac1ec1e; edit the modules, not this ----
+// ---- packed by runner/tools/pack.mjs from commit 51fbaf3; edit the modules, not this ----
 // packed files: ["app/sim/arms.js","app/sim/brainfile.js","app/sim/damage.js","app/sim/decide-weights-universal.js","app/sim/policy.js","app/sim/brain.js","app/sim/referee.js","app/sim/weights.js","dev_log/4-game/feet58-moves.js","engine/boxparts.js","engine/motors.js","engine/packs.js","engine/parts.js","engine/studio_gl.js","engine/draw_gl.js","engine/gfx.js","engine/forge.js","engine/rigs.js","app/sim/body.js","app/sim/gait.js","app/sim/grapple.js","app/sim/getup.js","app/sim/mjcf.js","app/sim/ranges.js","app/sim/stander.js","app/sim/waist.js","app/sim/strikes.js","app/sim/decide.js","app/sim/steer.js","app/sim/walker.js","app/sim/steps.js","app/sim/world.js","app/sim/evolve.js","app/software.js","dev_log/4-game/feet58-limits.js","dev_log/4-game/feet58-meter.js","dev_log/4-game/feet58-steps.js","dev_log/4-game/feet58-views.js","gpu/card.js","gpu/cardkit.js","gpu/fights.js","gpu/rules.js","gpu/state.js","gpu/lib.js","gpu/cardengine.js","gpu/tasks.js","gpu/trainer.js","runner/page.js","runner/pool.js","gpu/engine.js","gpu/job.js","runner/worker-kit.js"]
 const __m_app_sim_arms = (() => {
 
@@ -10346,6 +10346,7 @@ const STYLE = `
   .file .fn { font: 13px/1.35 ui-monospace, Consolas, monospace; word-break: break-all; }
   .file .fw { font-size: 13px; color: var(--dim); }
   .file .st { font-size: 13px; font-weight: 650; color: var(--ok); white-space: nowrap; }
+  .file .st[data-s=failed] { color: var(--bad); } .file .st[data-s=saving], .file .st[data-s=kept] { color: var(--dim); }
 
   details.log { margin-top: 18px; }
   #log { white-space: pre-wrap; font: 12px/1.45 ui-monospace, Consolas, monospace; color: var(--dim); max-height: 420px; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
@@ -10444,6 +10445,20 @@ function markup(W) {
   <section class="step" id="step3" data-state="waiting">
     <div class="n">3</div>
     <div class="body">
+      <h2>Pick a folder</h2>
+      <div class="sum"><span class="what2" id="s3sum"></span><button class="btn small" id="s3open">Change</button></div>
+      <div class="full">
+      <p class="lead">Where the files go. Each one is saved there the moment it is made, so nothing waits for you.</p>
+      <ul class="checks"><li><span class="ic" id="icFolder" data-tone="idle"></span><span class="k">Folder</span><span class="v" id="folderName">none yet</span></li></ul>
+      <div class="row"><button class="btn main hide" id="allowFolder">Allow</button><button class="btn main" id="pickFolder">Pick a folder</button><span class="why" id="folderWhy"></span></div>
+      <p class="note">To keep a copy in the cloud, pick a folder inside Google Drive, OneDrive or Dropbox.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="step4" data-state="waiting">
+    <div class="n">4</div>
+    <div class="body">
       <h2>${esc(W.verb)}</h2>
       <p class="lead">Start it and leave this tab open, in front. It stops by itself when it is done.</p>
       <div class="row"><button class="btn main" id="start" disabled>▶ ${esc(W.start)}</button><button class="btn stop" id="stop" disabled>■ Stop early</button><span class="why" id="startWhy">Check the speed first (step 2).</span></div>
@@ -10462,20 +10477,19 @@ function markup(W) {
           <svg id="chart" viewBox="0 0 300 100" preserveAspectRatio="none" role="img" aria-label="${esc(W.chart.label)}"></svg>
           <div class="legend"><span><i class="sw" style="background:var(--run)"></i>${esc(W.chart.best)}</span><span><i class="sw" style="background:var(--idle)"></i>${esc(W.chart.mean)}</span><span>${esc(W.chart.note)}</span></div>
         </div>
-        <div class="tip hide" id="stayTip">Keep this tab open and in front. If it closes or the computer restarts, open this page again and click <b>Carry on</b>.</div>
+        <div class="tip hide" id="stayTip">Keep this tab open and in front. If it closes or the computer restarts, open this page again and click <b>Carry on</b> (Chrome asks once to allow the folder again).</div>
       </div>
       <div class="card hide" id="outcome" data-tone="ok"></div>
     </div>
   </section>
 
-  <section class="step" id="step4" data-state="waiting">
-    <div class="n">4</div>
+  <section class="step" id="step5" data-state="waiting">
+    <div class="n">5</div>
     <div class="body">
       <h2>Your files</h2>
-      <p class="lead">Saved to <b>your Downloads folder</b> as soon as each one is made.</p>
+      <p class="lead" id="filesLead"></p>
       <div class="files"><div class="empty" id="filesEmpty">${esc(W.firstFile)}</div><div id="files"></div></div>
-      <div class="row hide" id="filesRow" style="margin-top:10px"><button class="btn small" id="saveAll">Save all again</button><span class="why" id="filesFrom"></span></div>
-      <div class="tip hide" id="multiTip">If Chrome asks to <b>download multiple files</b>, click <b>Allow</b>.</div>
+      <div class="row hide" id="filesRow" style="margin-top:10px"><button class="btn small" id="saveAgain">Save to the folder again</button><span class="why" id="filesFrom"></span></div>
       <div class="tip ok hide" id="nextTip">${esc(W.next)} A copy stays in this browser too, until the next ${esc(W.job)} starts.</div>
     </div>
   </section>
@@ -10500,7 +10514,7 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
   const out = { state: 'idle', log: [], result: null, estimateMin: null };
   window.__runner = out; window.__train = out;
   const ui = { task: (tonight || TASKS[0]).id, gpu: 'looking', prep: null, prepS: null, prepErr: null, measure: 'none', est: null, measureErr: null,
-    run: 'idle', err: null, stopAsked: false, resume: null, files: [], filesFrom: null, outcome: null, wake: 'wakeLock' in navigator ? 'ready' : 'none',
+    run: 'idle', err: null, stopAsked: false, resume: null, files: [], filesFrom: null, filesSub: null, outcome: null, wake: 'wakeLock' in navigator ? 'ready' : 'none',
     open: { 1: false, 2: false }, file: null };
 
   const E = job.engines({ spawn, say, onAnswer: k => { P.part += k; news(); }, onPart: f => { if (P.batch) P.part = Math.round(P.batch * f); news(); } });
@@ -10571,25 +10585,104 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
   const get = async k => { try { const d = await idb(); return await new Promise(res => { const r = d.transaction(STORE).objectStore(STORE).get(k); r.onsuccess = () => res(r.result || null); r.onerror = () => res(null); }); } catch { return null; } };
   const drop = k => put(k, null);
   const progressOf = snap => snap.done !== undefined ? { done: snap.done, of: snap.of } : job.progressOf ? job.progressOf(snap) : { done: 0, of: 1 };
+  function offerResume(snap, where) {
+    const { done, of } = progressOf(snap);
+    if (done >= of || running()) return;
+    ui.resume = snap; $('resumeCard').classList.remove('hide');
+    $('resumeText').textContent = `A ${W.job} was left at ${W.step.toLowerCase()} ${done} of ${of} (${new Date(snap.at).toLocaleString()})${where ? ', ' + where : ''}.`;
+    $('resumeGo').onclick = async () => { if (!(await folderReady())) { render(); return; } $('resumeCard').classList.add('hide'); ui.resume = null; run(snap.settings, snap, snap.task || null); };
+    $('resumeDrop').onclick = async () => { await drop('run'); await leave(snap.sub); $('resumeCard').classList.add('hide'); ui.resume = null; render(); findLeftRun(); };
+    render();
+  }
   (async () => { const snap = await get('run');
-    if (snap) { const { done, of } = progressOf(snap);
-      if (done < of) { ui.resume = snap; $('resumeCard').classList.remove('hide'); $('resumeText').textContent = `A ${W.job} was left at ${W.step.toLowerCase()} ${done} of ${of} (${new Date(snap.at).toLocaleString()}).`;
-        $('resumeGo').onclick = () => { $('resumeCard').classList.add('hide'); ui.resume = null; run(snap.settings, snap, snap.task || null); };
-        $('resumeDrop').onclick = async () => { await drop('run'); $('resumeCard').classList.add('hide'); ui.resume = null; render(); }; } }
+    if (snap) offerResume(snap, '');
     const kept = await get('files');
-    if (kept && kept.list && kept.list.length && ui.run === 'idle' && !ui.files.length) { ui.filesFrom = kept.at; for (const f of kept.list) addFile(f.name, f.text, f.type, false); }
+    if (kept && kept.list && kept.list.length && ui.run === 'idle' && !ui.files.length) { ui.filesFrom = kept.at; ui.filesSub = kept.sub || null; for (const f of kept.list) { const g = addFile(f.name, f.text, f.type); if (f.state === 'saved') g.state = 'saved'; } }
     render(); })();
 
-  const whatIs = n => job.fileWhat ? job.fileWhat(n) : '';
-  const toDownloads = f => { const a = document.createElement('a'); a.href = f.url; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); f.sent = true; };
-  function addFile(name, text, type, send) {
-    const f = { name, text, type, url: URL.createObjectURL(new Blob([text], { type })), sent: false };
-    ui.files.push(f); if (send) toDownloads(f);
-    return f;
+  const canPick = typeof window.showDirectoryPicker === 'function';
+  const folder = { h: null, name: '', state: canPick ? 'none' : 'unsupported', err: null, sub: null, dir: null, rec: null, progressErr: null };
+  const TEST = '.night-runner-test.txt';
+  const writeIn = async (dir, name, text, type = 'text/plain') => { const fh = await dir.getFileHandle(name, { create: true }), b = new Blob([text], { type });
+    const w = await fh.createWritable(); await w.write(b); await w.close();
+    if ((await fh.getFile()).size !== b.size) throw new Error('it did not read back whole'); };
+  let folderQ = Promise.resolve();
+  const useFolder = (h, remember = true) => (folderQ = folderQ.then(() => useFolderNow(h, remember)));
+  async function useFolderNow(h, remember) {
+    folder.h = h; folder.name = h.name || 'the folder'; folder.state = 'checking'; folder.err = null; render();
+    try { await writeIn(h, TEST, 'a test: this folder takes files'); await h.removeEntry(TEST).catch(() => {}); folder.state = 'ok'; say(`saving to the folder "${folder.name}": tested`); }
+    catch (e) { folder.state = 'bad'; folder.err = e.message; say(`the folder "${folder.name}" cannot be used: ${e.message}`); }
+    if (remember && folder.state === 'ok' && typeof FileSystemDirectoryHandle === 'function' && h instanceof FileSystemDirectoryHandle) await put('folder', h);
+    render(); if (folder.state === 'ok') findLeftRun();
+    return folder.state;
   }
-  const keepFiles = () => put('files', { at: Date.now(), list: ui.files.map(f => ({ name: f.name, text: f.text, type: f.type })) });
-  const download = (name, text, type = 'application/json') => { const f = addFile(name, text, type, true); ui.filesFrom = null; keepFiles(); render(); return f; };
-  $('saveAll').onclick = () => { for (const f of ui.files) toDownloads(f); render(); };
+  out.useFolder = h => useFolder(h);
+  out.folder = () => ({ state: folder.state, name: folder.name, sub: folder.sub, files: ui.files.map(f => ({ name: f.name, state: f.state, err: f.err })) });
+  async function pickFolder() {
+    if (!canPick || running()) return;
+    let h; try { h = await window.showDirectoryPicker({ id: `runner-${W.storage}`.replace(/[^\w-]/g, '-').slice(0, 32), mode: 'readwrite', startIn: 'documents' }); }
+    catch (e) { if (e.name !== 'AbortError') { folder.state = 'bad'; folder.err = e.message; render(); } return; }
+    await useFolder(h);
+  }
+  async function allowFolder() {
+    try { if (await folder.h.requestPermission({ mode: 'readwrite' }) === 'granted') return (await useFolder(folder.h, false)) === 'ok'; folder.err = 'not allowed'; }
+    catch (e) { folder.err = e.message; }
+    folder.state = 'ask'; render(); return false;
+  }
+  async function folderReady() {
+    if (folder.state === 'ok') return true;
+    if (folder.h && folder.state === 'ask') return allowFolder();
+    await pickFolder(); return folder.state === 'ok';
+  }
+  $('pickFolder').onclick = pickFolder; $('s3open').onclick = pickFolder; $('allowFolder').onclick = allowFolder;
+  (async () => { const h = canPick ? await get('folder') : null; if (!h || folder.h) return;
+    folder.h = h; folder.name = h.name || 'the folder'; let p = 'prompt'; try { p = await h.queryPermission({ mode: 'readwrite' }); } catch {   }
+    if (p === 'granted') await useFolder(h, false); else { folder.state = 'ask'; render(); } })();
+  const two = n => String(n).padStart(2, '0');
+  async function runFolder(sub, label) {
+    if (sub) { folder.dir = await folder.h.getDirectoryHandle(sub, { create: true }); folder.sub = sub; return; }
+    const d = new Date(), base = `${String(label).replace(/[\\/:*?"<>|]/g, '-')} ${d.getFullYear()}-${two(d.getMonth() + 1)}-${two(d.getDate())} ${two(d.getHours())}.${two(d.getMinutes())}`;
+    for (let i = 1; i < 100; i++) { const n = i === 1 ? base : `${base} (${i})`;
+      try { await folder.h.getDirectoryHandle(n); } catch (e) { if (e.name !== 'NotFoundError') continue; folder.dir = await folder.h.getDirectoryHandle(n, { create: true }); folder.sub = n; return; } }
+    throw new Error('no free name for the run\'s folder');
+  }
+  async function progressToFolder(rec, finished) {
+    folder.rec = rec;
+    try { if (!folder.dir) throw new Error('no folder');
+      await writeIn(folder.dir, 'progress.json', JSON.stringify({ app: W.storage, page: W.name, build, finished, ...rec }) + '\n', 'application/json'); folder.progressErr = null; }
+    catch (e) { if (folder.progressErr !== e.message) say('the progress could not be saved to the folder: ' + e.message); folder.progressErr = e.message; }
+    render();
+  }
+  const logToFolder = async () => { try { if (folder.dir) await writeIn(folder.dir, 'log.txt', $('log').textContent); } catch (e) { say('the log could not be saved to the folder: ' + e.message); } };
+  async function leave(sub) {
+    if (!sub) return; const left = (await get('left')) || []; if (!left.includes(sub)) await put('left', [...left, sub]);
+  }
+  async function findLeftRun() {
+    if (ui.resume || running() || ui.run !== 'idle' || folder.state !== 'ok' || await get('run')) return;
+    const left = (await get('left')) || []; let best = null;
+    try { for await (const [n, h] of folder.h.entries()) { if (h.kind !== 'directory' || left.includes(n)) continue;
+      let p = null; try { p = JSON.parse(await (await (await h.getFileHandle('progress.json')).getFile()).text()); } catch { continue; }
+      const same = (p.build ? p.build.commit : null) === (build ? build.commit : null);
+      if (p.app === W.storage && !p.finished && same && (!best || p.at > best.at)) best = { ...p, sub: n }; } }
+    catch (e) { say('the folder could not be read: ' + e.message); }
+    if (best && !ui.resume && !running()) offerResume(best, `saved in the folder "${best.sub}"`);
+  }
+
+  const whatIs = n => job.fileWhat ? job.fileWhat(n) : '';
+  function addFile(name, text, type) { const f = { name, text, type, url: URL.createObjectURL(new Blob([text], { type })), state: 'kept', err: null }; ui.files.push(f); return f; }
+  async function toFolder(f) {
+    f.state = 'saving'; render();
+    try { if (!folder.dir) throw new Error('no folder'); await writeIn(folder.dir, f.name, f.text, f.type); f.state = 'saved'; f.err = null; }
+    catch (e) { f.state = 'failed'; f.err = e.message; say(`${f.name} was NOT saved to the folder: ${e.message}`); }
+    render();
+  }
+  const keepFiles = () => put('files', { at: Date.now(), sub: folder.sub, list: ui.files.map(f => ({ name: f.name, text: f.text, type: f.type, state: f.state })) });
+  const save = async (name, text, type = 'application/json') => { const f = addFile(name, text, type); ui.filesFrom = null; keepFiles(); await toFolder(f); keepFiles(); return f; };
+  $('saveAgain').onclick = async () => {
+    if (!(await folderReady())) return;
+    try { await runFolder(folder.sub || ui.filesSub, `${W.job} files`); } catch (e) { say('the folder could not be opened: ' + e.message); return; }
+    for (const f of ui.files) if (f.state !== 'saved') await toFolder(f);
+    keepFiles(); render(); };
   $('s1open').onclick = () => { ui.open[1] = true; render(); }; $('s2open').onclick = () => { ui.open[2] = true; render(); };
 
   const running = () => ['training', 'stopping', 'grading'].includes(ui.run);
@@ -10598,9 +10691,11 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
   const counted = e => ({ ...e, async work(S, list, o) { P.batch = list.length; P.part = 0; const r = await e.work(S, list, o); P.done += list.length; P.batch = 0; P.part = 0; news(); render(); return r; } });
   async function run(S, resume, task) {
     await whenReady();
+    if (folder.state !== 'ok') { ui.run = 'failed'; ui.err = 'Not started: pick a folder first (step 3).'; say('NOT STARTED: no folder'); render(); return; }
     ui.stopAsked = false; ui.run = 'training'; ui.err = null; ui.outcome = null; out.task = task; out.build = build; out.state = 'training';
     $('start').disabled = true; $('measure').disabled = true; $('stop').disabled = false;
-    for (const f of ui.files) URL.revokeObjectURL(f.url); ui.files = []; ui.filesFrom = null; drop('files');
+    for (const f of ui.files) URL.revokeObjectURL(f.url); ui.files = []; ui.filesFrom = null; ui.filesSub = null; drop('files');
+    folder.dir = null; folder.sub = null; folder.rec = null; folder.progressErr = null;
     const sz = job.size(S), was = resume ? progressOf(resume) : { done: 0, of: 0 };
     P.total = sz.total; P.perStep = sz.perStep || 0; P.g = was.done; P.gens = was.of || sz.steps || 0; P.done = was.done * P.perStep; P.from = P.done; P.batch = 0; P.part = 0;
     P.t0 = Date.now(); P.end = 0; P.best = []; P.mean = []; news();
@@ -10608,20 +10703,28 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
     const t0 = Date.now();
     say(`${W.verbing} ${task ? '"' + task + '"' : 'settings typed by hand'} on ${engine.name}, ${build ? 'built from commit ' + build.commit : 'from the working folder'}`);
     try {
+      await runFolder(resume && resume.sub, task || 'own settings');
+      say(`its files go to the folder "${folder.name}", into "${folder.sub}"`);
+      const pend = [];
       const R = await job.run(S, counted(engine), {
         log: say,
         step: p => { P.g = p.done; P.gens = p.of; if (p.best !== undefined) { P.best.push(p.best); P.mean.push(p.mean); } if (p.done >= p.of) ui.run = 'grading'; render(); },
-        saved: snap => put('run', { ...snap, done: P.g, of: P.gens, at: Date.now(), task, settings: job.store ? job.store(S) : S }),
-        file: (name, text, type) => { download(name, text, type); if (ui.run !== 'grading') { ui.run = 'grading'; render(); } },
+        saved: async snap => { const rec = { ...snap, done: P.g, of: P.gens, at: Date.now(), task, settings: job.store ? job.store(S) : S, sub: folder.sub };
+          await put('run', rec); await progressToFolder(rec, false); },
+        file: (name, text, type) => { pend.push(save(name, text, type)); if (ui.run !== 'grading') { ui.run = 'grading'; render(); } },
         stop: () => ui.stopAsked,
       }, resume, { build, task, engineName: engine.name });
       out.result = R.result;
       ui.outcome = { ...R.outcome, stopped: ui.stopAsked, g: P.g, gens: P.gens };
-      for (const f of R.files || []) download(f.name, f.text, f.type);
+      for (const f of R.files || []) pend.push(save(f.name, f.text, f.type));
+      await Promise.all(pend);
       await drop('run');
-      say(`done in ${((Date.now() - t0) / 60000).toFixed(1)} min`);
+      await progressToFolder({ ...(folder.rec || { task, settings: job.store ? job.store(S) : S, sub: folder.sub }), done: P.g, of: P.gens, at: Date.now() }, true);
+      const miss = ui.files.filter(f => f.state !== 'saved').length;
+      say(`done in ${((Date.now() - t0) / 60000).toFixed(1)} min; ${ui.files.length - miss} of ${ui.files.length} files saved in the folder "${folder.name}", in "${folder.sub}"`);
       out.state = 'done'; ui.run = 'done';
     } catch (e) { say('FAILED: ' + (e.stack || e.message)); out.state = 'failed'; out.error = e.message; ui.run = 'failed'; ui.err = e.message; }
+    await logToFolder();
     P.end = Date.now();
     $('start').disabled = false; $('measure').disabled = false; $('stop').disabled = true;
     keepAwake(false); render();
@@ -10645,14 +10748,21 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
     if (ui.run === 'training') return ['run', W.running, `${W.step} ${Math.min(P.g + 1, P.gens || 1)} of ${P.gens || '?'}${left}`, pct, pr.frac];
     if (ui.run === 'stopping') return ['warn', 'Stopping early', `finishing this ${W.step.toLowerCase()}, then ${W.finishing.toLowerCase()}`, pct, pr.frac];
     if (ui.run === 'grading') return ['run', W.finishing, `${W.finishingDetail}${left}`, pct, pr.frac];
-    if (ui.run === 'done') { const o = ui.outcome || {}; return [o.tone || 'ok', o.status || 'Done', o.statusDetail || 'your files are in Downloads', '100%', 1]; }
+    if (ui.run === 'done') { const o = ui.outcome || {}, miss = ui.files.filter(f => f.state !== 'saved').length;
+      if (miss) return ['bad', `${o.status || 'Done'}, but ${miss === 1 ? 'a file was' : miss + ' files were'} not saved`, 'click Save to the folder again (step 5)', '100%', 1];
+      const where = ui.files.length ? `the files are in ${folder.name} › ${folder.sub}` : '';
+      return [o.tone || 'ok', o.status || 'Done', [o.statusDetail, where].filter(Boolean).join(' · ') || 'finished', '100%', 1]; }
     if (ui.run === 'failed') return ['bad', 'Stopped by a problem', ui.err || '', '', 0];
+    if (folder.state === 'unsupported') return ['bad', 'This browser cannot save to a folder', 'open this page in Chrome or Edge', '', 0];
     if (ui.resume) return ['warn', `A ${W.job} was interrupted`, 'click Carry on, or Start again', '', 0];
     if (ui.prep) return ['run', 'Getting the graphics card ready', `${Math.round((Date.now() - ui.prep) / 1000)} s · usually 20 to 35 s`, '', 0];
     if (!out.engineReady) return ['run', 'Looking at this computer', '', '', 0];
     if (ui.measure === 'running') return ['run', 'Checking the speed', 'about 30 seconds', '', 0];
     if (ui.measure === 'failed') return ['bad', 'The speed check failed', ui.measureErr || '', '', 0];
-    if (ui.measure === 'done') return ['ok', `Ready to ${W.verb.toLowerCase()}`, `${leftWords(ui.est.min)} · click ${W.start} (step 3)`, '', 0];
+    if (ui.measure === 'done' && folder.state !== 'ok') return folder.state === 'ask' ? ['warn', 'Allow the folder again', `click Allow “${folder.name}” (step 3)`, '', 0]
+      : folder.state === 'bad' ? ['bad', 'That folder cannot be used', 'pick another folder (step 3)', '', 0]
+      : folder.state === 'checking' ? ['run', 'Testing the folder', 'writing a file and reading it back', '', 0] : ['run', 'Next: pick a folder', 'step 3', '', 0];
+    if (ui.measure === 'done') return ['ok', `Ready to ${W.verb.toLowerCase()}`, `${leftWords(ui.est.min)} · click ${W.start} (step 4)`, '', 0];
     return ['run', 'Next: check the speed', 'step 2', '', 0];
   }
   const keys = { tasks: '', files: '' };
@@ -10711,6 +10821,22 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
     $('step2').classList.toggle('compact', $('step2').dataset.state === 'done' && !ui.open[2]);
     $('measure').classList.toggle('main', ui.measure !== 'done' && !lock);
 
+    const fs = folder.state, fn = esc(folder.name);
+    icon('icFolder', fs === 'ok' ? (folder.progressErr ? 'warn' : 'ok') : fs === 'checking' ? 'run' : fs === 'ask' ? 'warn' : fs === 'none' ? 'idle' : 'bad');
+    $('folderName').innerHTML = fs === 'unsupported' ? 'cannot pick one here <small>this browser cannot save to a folder: open this page in Chrome or Edge</small>'
+      : fs === 'none' ? 'none yet' : fs === 'checking' ? `${fn} <small>testing it…</small>`
+      : fs === 'ask' ? `${fn} <small>click Allow: Chrome asks again each time the page is opened</small>`
+      : fs === 'bad' ? `${fn || 'that folder'} <small>cannot be used: ${esc(folder.err || '')}</small>`
+      : folder.progressErr ? `${fn} <small style="color:var(--warn)">the progress could not be saved there: ${esc(folder.progressErr)}</small>` : `${fn} <small>tested: files are saved there</small>`;
+    $('allowFolder').classList.toggle('hide', fs !== 'ask'); $('allowFolder').textContent = `Allow “${folder.name}”`; $('allowFolder').disabled = lock;
+    $('pickFolder').textContent = fs === 'none' || fs === 'unsupported' ? 'Pick a folder' : 'Pick another folder';
+    $('pickFolder').disabled = lock || fs === 'unsupported' || fs === 'checking'; $('pickFolder').classList.toggle('main', fs === 'none' || fs === 'bad' || fs === 'unsupported');
+    $('folderWhy').textContent = lock ? `Locked while it is ${W.verbing}.` : fs === 'unsupported' ? 'Chrome and Edge can; this browser cannot.' : '';
+    $('step3').dataset.state = fs === 'ok' ? 'done' : fs === 'bad' || fs === 'unsupported' ? 'bad' : fs === 'ask' ? 'warn' : ui.measure === 'done' ? 'active' : 'waiting';
+    $('s3sum').innerHTML = `<b>Saving to ${fn}</b> · each ${esc(W.job)} in a folder of its own`;
+    $('s3open').classList.toggle('hide', lock);
+    $('step3').classList.toggle('compact', fs === 'ok' && !folder.progressErr);
+
     const o = ui.outcome, pr = progressNow(), live = running();
     const ptone = ui.run === 'failed' ? 'bad' : ui.run === 'stopping' ? 'warn' : ui.run === 'done' ? ((o && o.tone) || 'ok') : live ? 'run' : 'idle';
     tone($('progBox'), ptone); $('bar').classList.toggle('live', live);
@@ -10730,8 +10856,11 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
       tone($('alive'), quiet < 90000 ? 'run' : 'warn'); }
     $('stayTip').classList.toggle('hide', !live);
     drawChart();
-    $('start').disabled = live || ui.measure !== 'done' || !out.engineReady; $('start').classList.toggle('main', !live && ui.measure === 'done');
-    $('startWhy').textContent = live ? `Running. ${W.stopNote}` : ui.measure !== 'done' ? 'Check the speed first (step 2).' : ui.run === 'done' ? 'Start again for another run.' : 'Ready.';
+    const ready = ui.measure === 'done' && fs === 'ok';
+    $('start').disabled = live || !ready || !out.engineReady; $('start').classList.toggle('main', !live && ready);
+    $('startWhy').textContent = live ? `Running. ${W.stopNote}` : ui.measure !== 'done' ? 'Check the speed first (step 2).'
+      : fs === 'unsupported' ? 'This browser cannot save to a folder: open this page in Chrome or Edge.' : fs !== 'ok' ? 'Pick a folder first (step 3).'
+      : ui.run === 'done' ? 'Start again for another run.' : 'Ready.';
     const oc = $('outcome');
     if (ui.run === 'done' && o && o.title) {
       oc.classList.remove('hide'); tone(oc, o.tone || 'ok');
@@ -10741,19 +10870,22 @@ function mount(job, { spawn, loadModule = null, build = null } = {}) {
         + (o.note ? `<p class="sm">${esc(o.note)}</p>` : '');
     } else if (ui.run === 'failed') { oc.classList.remove('hide'); tone(oc, 'bad'); oc.innerHTML = `<p class="big">Stopped by a problem</p><p class="sm">${esc(ui.err || '')}</p><p class="sm">The full log is at the bottom of the page. Reload the page to try again.</p>`; }
     else oc.classList.add('hide');
-    $('step3').dataset.state = live ? 'active' : ui.run === 'done' ? (ptone === 'warn' ? 'warn' : 'done') : ui.run === 'failed' ? 'bad' : ui.measure === 'done' ? 'active' : 'waiting';
+    $('step4').dataset.state = live ? 'active' : ui.run === 'done' ? (ptone === 'warn' ? 'warn' : 'done') : ui.run === 'failed' ? 'bad' : ready ? 'active' : 'waiting';
 
-    const has = ui.files.length > 0;
+    const has = ui.files.length > 0, sub = folder.sub || ui.filesSub, miss = ui.files.filter(f => f.state === 'failed' || f.state === 'kept').length;
     $('filesEmpty').classList.toggle('hide', has);
-    const fk = ui.files.map(f => f.name + f.sent).join('|');
+    $('filesLead').innerHTML = sub && folder.name ? `In <b>${esc(folder.name)} › ${esc(sub)}</b>, saved the moment each one is made, with the ${esc(W.job)}'s progress and log.`
+      : `Each ${esc(W.job)} gets a folder of its own inside the one you pick (step 3): its files, its progress and its log.`;
+    const ST = { saved: '✓ saved', saving: 'saving…', failed: '✕ not saved', kept: 'kept in this browser' };
+    const fk = ui.files.map(f => f.name + f.state).join('|');
     if (fk !== keys.files) { keys.files = fk;
-      $('files').innerHTML = ui.files.map(f => `<div class="file"><div><div class="fn">${esc(f.name)}</div><div class="fw">${esc(whatIs(f.name))}</div></div>`
-        + `<span class="st">${f.sent ? '✓ sent to Downloads' : 'kept in this browser'}</span><a class="btn small" href="${esc(f.url)}" download="${esc(f.name)}">Save</a></div>`).join(''); }
-    $('filesRow').classList.toggle('hide', !has); $('saveAll').textContent = ui.files.some(f => f.sent) ? 'Save all again' : 'Save all';
+      $('files').innerHTML = ui.files.map(f => `<div class="file"><div><div class="fn">${esc(f.name)}</div><div class="fw">${esc(f.state === 'failed' ? 'Not in the folder: ' + (f.err || '') : whatIs(f.name))}</div></div>`
+        + `<span class="st" data-s="${f.state}">${ST[f.state]}</span>`
+        + (f.state === 'failed' || f.state === 'kept' ? `<a class="btn small" href="${esc(f.url)}" download="${esc(f.name)}">Download</a>` : '<span></span>') + '</div>').join(''); }
+    $('filesRow').classList.toggle('hide', !(has && miss && !live));
     $('filesFrom').textContent = ui.filesFrom ? `From the ${W.job} of ${new Date(ui.filesFrom).toLocaleString()}.` : '';
-    $('multiTip').classList.toggle('hide', !(ui.files.filter(f => f.sent).length > 1 || (live && has)));
-    $('nextTip').classList.toggle('hide', !(has && !live));
-    $('step4').dataset.state = has && !live ? 'done' : has ? 'active' : 'waiting';
+    $('nextTip').classList.toggle('hide', !(has && !live && !miss));
+    $('step5').dataset.state = has && !live ? (miss ? 'bad' : 'done') : has ? 'active' : 'waiting';
   }
   function drawChart() {
     const n = P.best.length, box = $('chartBox'); box.classList.toggle('hide', n < 2);
@@ -10911,7 +11043,7 @@ async function run(S, engine, hooks, resume, { build, task, engineName }) {
   const outcome = R.SHORT ? { tone: 'ok', status: 'Done', statusDetail: 'a short run: no files' }
     : { tone: R.passed ? 'ok' : 'warn',
         status: R.passed ? 'Done: the new brain passed' : 'Done: not better than the stock brain',
-        statusDetail: R.passed ? 'your files are in Downloads' : 'your files are in Downloads, as a record',
+        statusDetail: R.passed ? '' : 'kept as a record',
         title: R.passed ? '✓ The new brain passed' : 'The new brain did not pass',
         lines: [{ label: 'Beats the stock brain', yes: R.vs.stock.better, detail: n(R.vs.stock) },
                 { label: 'Beats a brain that was never trained', yes: R.vs.untrained.better, detail: n(R.vs.untrained) }],
@@ -10943,7 +11075,7 @@ return { serve };
 </script>
 <script>
 const __RUNNER_MODULES = { "app/sim/decide-weights-universal.js": __m_app_sim_decide_weights_universal, "gpu/cardkit.js": __m_gpu_cardkit };
-const __RUNNER_BUILD = {"commit":"ac1ec1e","date":"2026-09-29","built":"2026-09-29 18:37"};
+const __RUNNER_BUILD = {"commit":"51fbaf3","date":"2026-09-29","built":"2026-09-29 20:06"};
 const __RUNNER_WORKER_URL = URL.createObjectURL(new Blob([document.getElementById('runner-bundle').textContent, "\nconst { fight, loadShipped } = __m_gpu_fights;\nconst { serve } = __m_runner_worker_kit;\n\nserve({\n  ready: async S => { if (S.pool) await loadShipped(); },\n  prepare: (S, shared) => shared.brains.map(w => Float64Array.from(w)),\n  run: (S, j, W) => fight(S, { kind: j.brain.kind, w: j.brain.w >= 0 ? W[j.brain.w] : null, fitted: j.brain.fitted }, j.seed, j.oi, j.self >= 0 ? W[j.self] : null),\n});\n"], { type: 'text/javascript' }));
 (async () => {
 
