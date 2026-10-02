@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit ce9181a. Opens by double-click. Do not edit by hand. -->
+<!-- THE TRAINING PAGE, ONE FILE: packed by runner/tools/pack.mjs from commit 9c3c05e. Opens by double-click. Do not edit by hand. -->
 <!-- THIRD-PARTY NOTICE. The robot part shapes in this page are derived from the link meshes of unitree_ros
      (github.com/unitreerobotics/unitree_ros), used under the BSD 3-Clause licence below. This project is not affiliated with,
      nor endorsed by, Unitree Robotics.
@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </head>
 <body>
 <script id="runner-bundle">
-// ---- packed by runner/tools/pack.mjs from commit ce9181a; edit the modules, not this ----
+// ---- packed by runner/tools/pack.mjs from commit 9c3c05e; edit the modules, not this ----
 // packed files: ["app/sim/arms.js","app/sim/brainfile.js","app/sim/damage.js","app/sim/decide-weights-universal.js","app/sim/policy.js","app/sim/brain.js","app/sim/referee.js","app/sim/weights.js","dev_log/4-game/feet58-moves.js","engine/boxparts.js","engine/motors.js","engine/packs.js","engine/parts.js","engine/studio_gl.js","engine/draw_gl.js","engine/gfx.js","engine/forge.js","engine/rigs.js","app/sim/body.js","app/sim/gait.js","app/sim/grapple.js","app/sim/getup.js","app/sim/mjcf.js","app/sim/ranges.js","app/sim/stander.js","app/sim/waist.js","app/sim/strikes.js","app/sim/decide.js","app/sim/steer.js","app/sim/walker.js","app/sim/steps.js","app/sim/world.js","app/sim/evolve.js","app/software.js","dev_log/4-game/feet58-limits.js","dev_log/4-game/feet58-meter.js","dev_log/4-game/feet58-steps.js","dev_log/4-game/feet58-views.js","gpu/card.js","gpu/cardkit.js","gpu/fights.js","gpu/rules.js","gpu/state.js","gpu/lib.js","gpu/cardengine.js","gpu/tasks.js","gpu/trainer.js","runner/page.js","runner/pool.js","gpu/engine.js","gpu/job.js","runner/worker-kit.js"]
 const __m_app_sim_arms = (() => {
 
@@ -10226,6 +10226,7 @@ const { RULES } = __m_app_sim_world;
 const framesFor = seconds => { let t = 0, k = 0; while (t < seconds) { t += 1 / 60; k++; } return k; };
 const PIECES = ['head', 'torso', 'right arm', 'left arm', 'right leg', 'left leg'];
 
+const NO_ANSWER = 60;
 async function cardEngine({ device = null, name = null, say = () => {}, target = 0.25 } = {}) {
   const gpu = device ? { device, name: name || 'the given card' } : await gpuDevice();
   const { cardKit } = await Promise.resolve(__m_gpu_cardkit);
@@ -10234,6 +10235,7 @@ async function cardEngine({ device = null, name = null, say = () => {}, target =
   const lib = await build(gpu.device, [K.program]);
   const compiled = { ...lastCompile };
   let chunk = 4;
+  let lost = null; const lostSaid = gpu.device.lost.then(info => { lost = info; say(`THE GRAPHICS CARD WAS LOST (${info.reason || 'no reason given'}): ${info.message || ''}`); return info; });
   const engine = { name: `the graphics card (${gpu.name})`, threads: 'card', card: gpu.name, last: null, compiled,
     starts(S, list) {
       if (K.step) globalThis.__tracedStep = K.step;
@@ -10259,9 +10261,19 @@ async function cardEngine({ device = null, name = null, say = () => {}, target =
       const n = states.length / state.R;
       const ses = await session(gpu.device, lib, 0, states, { argsStride: 1, outStride: OUTS, tables, over });
       let alive = n, done = 1;
+      chunk = 4;
       try {
         while (alive > 0 && done < frames + 2) {
-          const s0 = performance.now(), outs = await ses.dispatch(new Uint32Array(n).fill(chunk)), dt = (performance.now() - s0) / 1000;
+          const s0 = performance.now(), asked = chunk, busy = alive;
+          let timer = null;
+          const got = await Promise.race([ses.dispatch(new Uint32Array(n).fill(chunk)),
+            lostSaid.then(info => ({ lostInfo: info })), new Promise(ok => { timer = setTimeout(() => ok({ noAnswer: true }), NO_ANSWER * 1000); })]);
+          clearTimeout(timer);
+          if (got.lostInfo) throw new Error(`the graphics card was lost during a call of ${asked} frames for ${busy} of ${n} fights: ${got.lostInfo.message || got.lostInfo.reason}`);
+          if (got.noAnswer) throw new Error(`the graphics card did not answer a call of ${asked} frames for ${busy} of ${n} fights in ${NO_ANSWER} s (the system may have reset it)`);
+          const outs = got;
+          const dt = (performance.now() - s0) / 1000;
+          if (dt > 1) say(`a call to the card took ${dt.toFixed(1)} s: ${asked} frames for ${busy} of ${n} fights`);
           alive = 0; for (let k = 0; k < n; k++) if (outs[k * OUTS + OUTS - 1]) alive++;
           done += chunk;
           chunk = Math.max(1, Math.min(600, Math.round(chunk * Math.min(4, target / Math.max(1e-3, dt)))));
@@ -11373,7 +11385,7 @@ return { serve };
 </script>
 <script>
 const __RUNNER_MODULES = { "app/sim/decide-weights-universal.js": __m_app_sim_decide_weights_universal, "gpu/cardkit.js": __m_gpu_cardkit };
-const __RUNNER_BUILD = {"commit":"ce9181a","date":"2026-10-02","built":"2026-10-02 12:16"};
+const __RUNNER_BUILD = {"commit":"9c3c05e","date":"2026-10-02","built":"2026-10-02 14:55"};
 const __RUNNER_WORKER_URL = URL.createObjectURL(new Blob([document.getElementById('runner-bundle').textContent, "\nconst { fight, loadShipped } = __m_gpu_fights;\nconst { serve } = __m_runner_worker_kit;\n\nserve({\n  ready: async S => { if (S.pool) await loadShipped(); },\n  prepare: (S, shared) => shared.brains.map(w => Float64Array.from(w)),\n  run: (S, j, W) => fight(S, { kind: j.brain.kind, w: j.brain.w >= 0 ? W[j.brain.w] : null, fitted: j.brain.fitted }, j.seed, j.oi, j.self >= 0 ? W[j.self] : null),\n});\n"], { type: 'text/javascript' }));
 (async () => {
 
