@@ -31,7 +31,7 @@ computer's graphics card when the browser can use one, and on all of its process
 
 ## This build
 
-Built from the game at commit 79acd3c (2026-09-29). Every file the page gives carries that commit.
+Built from the game at commit 44916a1 (2026-10-01). Every file the page gives carries that commit.
 
 ## Third-party notice
 
