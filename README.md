@@ -20,18 +20,19 @@ computer's graphics card when the browser can use one, and on all of its process
 
 ## Tonight
 
-**The brain, from stock, on the new moves (29 September)** - Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.
+**The brain, from stock, full size (2 October)** - Trains the AI brain from the stock rules on the fight as it is now: a strike its style has not practised lands softer, and a blow on a raised guard does half the harm. Each version is scored on 240 fights, so luck does not pick the winner.
 
 ## The trainings on this build
 
 - **The brain, from stock** - Trains the AI brain, starting from the stock rules. Whole fights against the stock brain, a dice fighter and itself.
 - **The sensors alone, onto the game's brain** - Trains only the sensors, on top of the brain the game ships.
 - **A quick try (a few minutes)** - A few minutes, to see that this computer can train. Not a brain for the game.
-- **The brain, from stock, on the new moves (29 September)** (tonight) - Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.
+- **The brain, from stock, on the new moves (29 September)** - Trains the AI brain again, starting from the stock rules, on the fight as it is now: the new walk, kicks, grips and getting up. Whole fights against the stock brain, a dice fighter and itself.
+- **The brain, from stock, full size (2 October)** (tonight) - Trains the AI brain from the stock rules on the fight as it is now: a strike its style has not practised lands softer, and a blow on a raised guard does half the harm. Each version is scored on 240 fights, so luck does not pick the winner.
 
 ## This build
 
-Built from the game at commit 44916a1 (2026-10-01). Every file the page gives carries that commit.
+Built from the game at commit bb69523 (2026-10-02). Every file the page gives carries that commit.
 
 ## Third-party notice
 
